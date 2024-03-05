@@ -11,6 +11,8 @@ This project breathes life into video characters by using AI to describe their p
 3. then, chatting with that personality
     - We choose either [Gemini API from Google AI Studio](https://ai.google.dev/) or [Gemini API from Generative AI on Vertex AI](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/gemini).
 
+The final output is the Gradio based chatting application hosted on [Hugging Face Space](https://huggingface.co/spaces).
+
 Optionally, we could leverage other open source technologies
 - [diffusers](https://huggingface.co/docs/diffusers/en/index) to generate images of the person in different poses or the backgrounds
 - [transformers](https://huggingface.co/docs/transformers/en/index) to replace closed Gemini model with open models such as [LLaMA2](https://llama.meta.com/), [Gemma](https://blog.google/technology/developers/gemma-open-models/), [Mistral](https://mistral.ai/), etc.,
