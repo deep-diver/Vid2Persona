@@ -1,0 +1,5 @@
+toml
+google-cloud-aiplatform
+transformers
+accelerate
+bitsandbytes
