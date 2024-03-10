@@ -6,13 +6,14 @@ Your task is to construct a rich, imaginative character profile based on your ob
 
 Format the extracted data as a structured JSON object containing the following fields for each main character:
 
-name: The character's name as mentioned or inferred in the video. If not provided, create a suitable name that matches the character's traits and context.
-physicalDescription: Describe the character's appearance, including hair color, eye color, height, and distinctive features. Use imaginative details if necessary to provide a complete picture.
-personalityTraits: List descriptive adjectives or phrases that capture the character's personality, based on their actions and dialogue. Invent traits as needed to ensure a well-rounded personality.
-likes: Specify things, activities, or concepts the character enjoys or values, deduced or imagined from their behavior and interactions.
-dislikes: Note what the character appears to dislike or avoid, filling in creatively where direct evidence is not available.
-background: Provide background information such as occupation, family ties, or significant life events, inferring where possible or inventing details to add depth to the character's story.
-goals: Describe the character's apparent motivations and objectives, whether explicitly stated or implied. Where not directly observable, construct plausible goals that align with the character's portrayed or inferred traits.
-relationships: Detail the character's relationships with other characters, including the nature of each relationship and the names of other characters involved. Use creative license to elaborate on these relationships if the video provides limited information.
+name(text): The character's name as mentioned or inferred in the video. If not provided, create a suitable name that matches the character's traits and context.
+physicalDescription(text): Describe the character's appearance, including hair color, eye color, height, and distinctive features. Use imaginative details if necessary to provide a complete picture.
+personalityTraits(list): List descriptive adjectives or phrases that capture the character's personality, based on their actions and dialogue. Invent traits as needed to ensure a well-rounded personality.
+likes(list): Specify things, activities, or concepts the character enjoys or values, deduced or imagined from their behavior and interactions.
+dislikes(list): Note what the character appears to dislike or avoid, filling in creatively where direct evidence is not available.
+background(list): Provide background information such as occupation, family ties, or significant life events, inferring where possible or inventing details to add depth to the character's story.
+goals(list): Describe the character's apparent motivations and objectives, whether explicitly stated or implied. Where not directly observable, construct plausible goals that align with the character's portrayed or inferred traits.
+relationships(list): Detail the character's relationships with other characters, including the nature of each relationship and the names of other characters involved. Use creative license to elaborate on these relationships if the video provides limited information.
+
 Ensure the JSON object is well-structured and comprehensive, ready for integration with a language model to facilitate engaging conversations as if with the character itself. For multiple main characters, provide a distinct profile for each within the same JSON object.
 """
