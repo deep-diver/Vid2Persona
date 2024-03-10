@@ -16,16 +16,13 @@ def _default_gen_config():
         top_k=32
     )
 
-def _default_model_name():
-    return "gemini-1.0-pro-vision"
-
 def init_vertexai(project_id: str, location: str) -> None:
     vertexai.init(project=project_id, location=location)
 
 def _ask_about_video(
     prompt: str="What is in the video?",
     gen_config: dict=_default_gen_config(),
-    model_name: str=_default_model_name(),
+    model_name: str="gemini-1.0-pro-vision",
     gcs: str=None, 
     base64_content: bytes=None
 ) -> Union[GenerationResponse, Iterable[GenerationResponse]]:
