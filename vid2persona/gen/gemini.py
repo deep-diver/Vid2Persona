@@ -19,7 +19,7 @@ def _default_gen_config():
 def init_vertexai(project_id: str, location: str) -> None:
     vertexai.init(project=project_id, location=location)
 
-def _ask_about_video(
+async def _ask_about_video(
     prompt: str="What is in the video?",
     gen_config: dict=_default_gen_config(),
     model_name: str="gemini-1.0-pro-vision",
@@ -38,18 +38,18 @@ def _ask_about_video(
         video = Part.from_data(data=base64_content, mime_type="video/mp4")
 
     model = GenerativeModel(model_name)
-    return model.generate_content(
+    return await model.generate_content_async(
         [video, prompt],
         generation_config=gen_config
     )
 
-def ask_about_video(prompt: str, video_clip: bytes, retry_num: int=10):
+async def ask_about_video(prompt: str, video_clip: bytes, retry_num: int=10):
     json_content = None
     cur_retry = 0
 
     while json_content is None and cur_retry < retry_num:
         try:
-            resps = _ask_about_video(
+            resps = await _ask_about_video(
                 prompt=prompt, base64_content=video_clip
             )
 
