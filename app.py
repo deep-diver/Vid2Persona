@@ -31,7 +31,13 @@ async def extract_traits(video_path,  gcp_project_id, gcp_project_location, prom
     if 'characters' in traits:
         traits = traits['characters'][0]
 
-    return traits, [], ""
+    return [
+        traits, [], 
+        gr.Textbox("", interactive=True),
+        gr.Button(interactive=True),
+        gr.Button(interactive=True),
+        gr.Button(interactive=True)
+    ]
 
 async def conversation(
     message: str, messages: list, traits: dict,
@@ -44,7 +50,7 @@ async def conversation(
         hf_access_token = None
 
     messages = messages + [[message, ""]]
-    yield messages, message
+    yield [messages, message, gr.Button(interactive=False), gr.Button(interactive=False)]
 
     async for partial_response in llm.chat(
         message, messages, traits,
@@ -56,8 +62,9 @@ async def conversation(
         last_message = messages[-1]
         last_message[1] = last_message[1] + partial_response
         messages[-1] = last_message
-        yield messages, ""
+        yield [messages, "", gr.Button(interactive=False), gr.Button(interactive=False)]
 
+    yield [messages, "", gr.Button(interactive=True), gr.Button(interactive=True)]
 
 async def regen_conversation(
     messages: list, traits: dict,
@@ -70,7 +77,7 @@ async def regen_conversation(
         message = messages[-1][0]
         messages = messages[:-1]
         messages = messages + [[message, ""]]
-        yield messages, ""
+        yield [messages, "", gr.Button(interactive=False), gr.Button(interactive=False)]
 
         async for partial_response in llm.chat(
             message, messages, traits,
@@ -82,7 +89,9 @@ async def regen_conversation(
             last_message = messages[-1]
             last_message[1] = last_message[1] + partial_response
             messages[-1] = last_message
-            yield messages, ""
+            yield [messages, "", gr.Button(interactive=False), gr.Button(interactive=False)]
+
+        yield [messages, "", gr.Button(interactive=True), gr.Button(interactive=True)]
 
 @validate_args
 def main(args):
@@ -94,8 +103,7 @@ def main(args):
         hf_access_token = gr.Textbox(args.hf_access_token, visible=False)
 
         gr.Markdown("Vid2Persona", elem_classes=["md-center", "h1-font"])
-        gr.Markdown("This project breathes life into video characters by using AI to describe their personality and then chat with you as them. "
-                    "")
+        gr.Markdown("This project breathes life into video characters by using AI to describe their personality and then chat with you as them.")
 
         with gr.Column(elem_classes=["group"]):
             with gr.Row():
@@ -108,9 +116,10 @@ def main(args):
         with gr.Column(elem_classes=["group"]):
             chatbot = gr.Chatbot([], label="chatbot", elem_id="chatbot", elem_classes=["chatbot-no-label"])
             with gr.Row():
-                clear = gr.Button("clear conversation")
-                regen = gr.Button("regenerate the last")            
-            user_input = gr.Textbox(placeholder="ask anything", elem_classes=["textbox-no-label", "textbox-no-top-bottom-borders"])
+                clear = gr.Button("clear conversation", interactive=False)
+                regen = gr.Button("regenerate the last", interactive=False)
+                stop = gr.Button("stop", interactive=False) 
+            user_input = gr.Textbox(placeholder="ask anything", interactive=False, elem_classes=["textbox-no-label", "textbox-no-top-bottom-borders"])
 
             with gr.Accordion("parameters' control pane", open=False):
                 model_id = gr.Dropdown(choices=init.ALLOWED_LLM_FOR_HF_PRO_ACCOUNTS, value=args.model_id, label="Model ID")
@@ -136,10 +145,10 @@ def main(args):
         trait_gen.click(
             extract_traits,
             [video, gcp_project_id, gcp_project_location, prompt_tpl_path],
-            [traits, chatbot, user_input]
+            [traits, chatbot, user_input, clear, regen, stop]
         )
 
-        user_input.submit(
+        conv = user_input.submit(
             conversation,
             [
                 user_input, chatbot, traits,
@@ -148,15 +157,19 @@ def main(args):
                 temperature, top_p, top_k,
                 repetition_penalty, hf_access_token
             ],
-            [chatbot, user_input]
+            [chatbot, user_input, clear, regen]
         )
 
         clear.click(
-            lambda: gr.Chatbot([]),
-            None, [chatbot]
+            lambda: [
+                gr.Chatbot([]),
+                gr.Button(interactive=False),
+                gr.Button(interactive=False),
+            ],
+            None, [chatbot, clear, regen]
         )
 
-        regen.click(
+        conv_regen = regen.click(
             regen_conversation,
             [
                 chatbot, traits,
@@ -165,7 +178,12 @@ def main(args):
                 temperature, top_p, top_k,
                 repetition_penalty, hf_access_token
             ],
-            [chatbot, user_input]    
+            [chatbot, user_input, clear, regen]
+        )
+
+        stop.click(
+            None, None, None, 
+            cancels=[conv, conv_regen]
         )
 
     demo.launch()
