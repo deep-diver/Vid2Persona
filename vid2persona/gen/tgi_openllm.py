@@ -7,7 +7,7 @@ async def send_messages(
     parameters: dict
 ):
     parameters.pop('top_k')
-    parameters['max_tokens'] = parameters.pop('max_new_token')
+    parameters['max_tokens'] = parameters.pop('max_new_tokens')
     parameters['presence_penalty'] = parameters.pop('repetition_penalty')
 
     client = AsyncOpenAI(
