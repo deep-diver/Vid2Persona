@@ -4,3 +4,4 @@ transformers
 accelerate
 bitsandbytes
 openai
+gradio
