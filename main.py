@@ -14,20 +14,8 @@ def validate_args(func):
         if args.gcp_project_id is None or args.gcp_project_location is None:
             raise ValueError("gcp-project-id or gcp-project-location is missing")
         
-        if args.hf_access_token is not None:
-            # https://huggingface.co/blog/inference-pro
-            allowed_models_hf_pro = [
-                "mistralai/Mixtral-8x7B-Instruct-v0.1",
-                "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO",
-                "mistralai/Mistral-7B-Instruct-v0.2",
-                "mistralai/Mistral-7B-Instruct-v0.1",
-                "HuggingFaceH4/zephyr-7b-beta",
-                "meta-llama/Llama-2-7b-chat-hf",
-                "meta-llama/Llama-2-13b-chat-hf",
-                "meta-llama/Llama-2-70b-chat-hf",
-                "openchat/openchat-3.5-0106"
-            ]
-            if args.model_id not in allowed_models_hf_pro:
+        if args.hf_access_token is not None:            
+            if args.model_id not in init.ALLOWED_LLM_FOR_HF_PRO_ACCOUNTS:
                 raise ValueError("not supported model for Hugging Face PRO account")
         return func(args)
     return inner_function
