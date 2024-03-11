@@ -43,19 +43,52 @@ async def workflow(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--gcp-project-id', type=str, required=True)
-    parser.add_argument('--gcp-project-location', type=str, required=True)
-    parser.add_argument('--target-movie-clip', type=str, default="assets/sample1.mp4")
-    parser.add_argument('--prompt-tpl-path', type=str, default="vid2persona/prompts")
-    parser.add_argument('--hf-access-token', type=str, default=None)
-    parser.add_argument('--model-id', type=str, default="HuggingFaceH4/zephyr-7b-beta")
-    parser.add_argument('--max-input-token-length', type=int, default=4096)
-    parser.add_argument('--max-new-tokens', type=int, default=1024)
-    parser.add_argument('--temperature', type=float, default=0.6)
-    parser.add_argument('--top-p', type=float, default=0.9)
-    parser.add_argument('--top-k', type=int, default=50)
-    parser.add_argument('--repetition-penalty', type=float, default=1.2)
-    parser.add_argument('--message', type=str, default="Hello there! How are you doing?")
+    parser.add_argument('--gcp-project-id', type=str, required=True, 
+                        help="The ID of your Google Cloud Platform (GCP) project. which "
+                             "you want to run Vertex AI multimodal video anlaysis with "
+                             "Gemini 1.0 Pro Vision model.")
+    
+    parser.add_argument('--gcp-project-location', type=str, required=True, 
+                        help="The GCP region where you want to run Vertex AI multimodal "
+                             "video analysis with Gemini 1.0 Pro Vision model.")
+    
+    parser.add_argument('--target-movie-clip', type=str, default="assets/sample1.mp4", 
+                        help="Video file path you want to analyze and process.")
+    
+    parser.add_argument('--prompt-tpl-path', type=str, default="vid2persona/prompts", 
+                        help="Path to the directory containing prompt templates for the model.")
+    
+    parser.add_argument('--hf-access-token', type=str, default=None, 
+                        help="Your Hugging Face access token (if needed for model access). "
+                             "If you don't specify this, the program will run the model on "
+                             "your local machine")
+    
+    parser.add_argument('--model-id', type=str, default="HuggingFaceH4/zephyr-7b-beta", 
+                        help="The Hugging Face model repository fo the language model to use.")
+    
+    parser.add_argument('--max-input-token-length', type=int, default=4096, 
+                        help="Maximum number of input tokens allowed for the model.")
+    
+    parser.add_argument('--max-new-tokens', type=int, default=1024, 
+                        help="Maximum number of input tokens allowed for the model.")
+    
+    parser.add_argument('--temperature', type=float, default=0.6, 
+                        help="Controls the randomness/creativity of the model's output "
+                             "(higher values mean more random).")
+    
+    parser.add_argument('--top-p', type=float, default=0.9, 
+                        help="Nucleus sampling: considers the smallest set of tokens with "
+                             "a cumulative probability of at least 'top_p'.")
+    
+    parser.add_argument('--top-k', type=int, default=50, 
+                        help="Limits the number of tokens considered for generation at each step.")
+    
+    parser.add_argument('--repetition-penalty', type=float, default=1.2, 
+                        help="Penalizes repeated tokens to encourage diversity in the output.")
+    
+    parser.add_argument('--message', type=str, default="Hello there! How are you doing?", 
+                        help="The initial message to start a conversation or text generation task.")
+    
     args = parser.parse_args()
 
     asyncio.run(workflow(args))
