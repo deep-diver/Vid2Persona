@@ -74,6 +74,9 @@ async def regen_conversation(
     repetition_penalty: float, hf_access_token: str, 
 ):
     if len(messages) > 0:
+        if hf_access_token == "": 
+            hf_access_token = None
+
         message = messages[-1][0]
         messages = messages[:-1]
         messages = messages + [[message, ""]]
@@ -126,7 +129,7 @@ def main(args):
 
                 with gr.Row():
                     max_input_token_length = gr.Slider(minimum=1024, maximum=4096, value=args.max_input_token_length, label="max-input-tokens")
-                    max_new_tokens = gr.Slider(minimum=512, maximum=2048, value=args.max_new_tokens, label="max-new-tokens")
+                    max_new_tokens = gr.Slider(minimum=128, maximum=2048, value=args.max_new_tokens, label="max-new-tokens")
 
                 with gr.Row():
                     temperature = gr.Slider(minimum=0, maximum=2, step=0.1, value=args.temperature, label="temperature")
@@ -213,7 +216,7 @@ if __name__ == "__main__":
     parser.add_argument('--max-input-token-length', type=int, default=4096, 
                         help="Maximum number of input tokens allowed for the model.")
     
-    parser.add_argument('--max-new-tokens', type=int, default=2048, 
+    parser.add_argument('--max-new-tokens', type=int, default=128, 
                         help="Maximum number of input tokens allowed for the model.")
     
     parser.add_argument('--temperature', type=float, default=0.6, 
