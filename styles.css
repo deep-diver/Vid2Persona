@@ -1,0 +1,45 @@
+.textbox-no-label > label > span {
+    display: none;
+}
+
+.textbox-no-top-bottom-borders > label > textarea {
+    border: none !important;
+}
+
+.chatbot-no-label > div > label {
+    display: none;
+}
+
+.md-center {
+    text-align: center;
+    display: block;
+}
+
+.h1-font > span {
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+.json-holder {
+    overflow: scroll;
+    height: 500px;
+}
+
+.group {
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    border: 2px dashed gray;
+    border-radius: 20px;
+    box-shadow: 5px 3px 10px 1px rgba(0, 0, 0, 0.4) !important;
+}
+
+#bottom-md a {
+    float: left;
+    margin-right: 10px;
+}
+
+#chatbot {
+    height: 600px !important;
+}
